@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+/*
+ * Complete the 'nonDivisibleSubset' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER k
+ *  2. INTEGER_ARRAY s
+ */
+int n;
+
+int nonDivisibleSubset(int k, vector<int> s) {
+    vector<vector<int>> sn(n);
+    int i = 0;
+    int div_flag;
+    
+    for(int x: s) sn[i++].push_back(x); // 0th column is filled with 
+                                        // one of elements of vector<int> s
+    
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<n;j++) {
+            if(i!=j) {
+                div_flag = 0;
+                for(int x:sn[j]) {
+                    if((s[i]+x)%k == 0) {
+                        div_flag = 1;
+                    }
+                }
+                if(!div_flag) sn[j].push_back(s[i]);
+            }
+        }
+    }    
+    int max = 0;
+    for(int i=0;i<n;i++) {
+        if(sn[i].size() > max) max = sn[i].size();
+    }
+    return max;
+}
+
+int main()
+{
+    int k;
+    cin >> n >> k;
+    vector<int> s(n);
+    for (int i = 0; i < n; i++) cin >> s[i];
+    int result = nonDivisibleSubset(k, s);
+    cout << result << "\n";
+    return 0;
+}
